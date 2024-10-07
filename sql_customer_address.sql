@@ -47,6 +47,9 @@ WHERE "CA_CITY" = 'Birmingham';
 SELECT * FROM CUSTOMER_DATA
 WHERE "CA_GMT_OFFSET" = (SELECT MAX("CA_GMT_OFFSET") FROM CUSTOMER_DATA); -- these are all addresses with the hightest GMT OFFSET
 
+--we can optimize the above query by using an index
+CREATE INDEX idx_gmt_offset ON CUSTOMER_DATA("CA_GMT_OFFSET");
+
 
 SELECT * FROM CUSTOMER_DATA
 WHERE "CA_GMT_OFFSET" = (SELECT MIN("CA_GMT_OFFSET") FROM CUSTOMER_DATA); -- these are all addresses with the lowest GMT OFFSET
@@ -80,4 +83,11 @@ ORDER BY address_count DESC;
 SELECT "CA_STATE", COUNT(*) AS address_count
 FROM CUSTOMER_DATA
 GROUP BY "CA_STATE"
+ORDER BY address_count DESC;
+
+
+-- lets group by country
+SELECT "CA_COUNTRY", COUNT(*) AS address_count
+FROM CUSTOMER_DATA
+GROUP BY "CA_COUNTRY"
 ORDER BY address_count DESC;
